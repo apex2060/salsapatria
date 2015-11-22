@@ -4,6 +4,10 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
 body {
     overflow-x: hidden;
     font-family: "Roboto Slab","Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -864,4 +868,25 @@ img::-moz-selection {
 
 body {
     webkit-tap-highlight-color: #fed136;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.card .label {
+    position: absolute;
+    margin: 10px;
+    box-shadow: -2px -2px 5px #000;
+    color: #000;
 }
