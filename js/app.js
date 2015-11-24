@@ -19,28 +19,11 @@ angular.module('myApp', [])
 	return config;
 })
 .controller('MainCtrl', function($scope, $http, config) {
-	var store = $scope.store = {
-		items: [
-			{
-				title: 		'Hot Salsa',
-				img: 		'img/products/hot.jpg',
-				price: 		5.90,
-				shipping: 	2.5,
-			},
-			{
-				title: 		'Medium Salsa',
-				img: 		'img/products/medium.jpg',
-				price: 		5.90,
-				shipping: 	2.5,
-			},
-			{
-				title: 		'Mild Salsa',
-				img: 		'img/products/mild.jpg',
-				price: 		5.90,
-				shipping: 	2.5,
-			}
-		]
-	}
+	$http.get(config.parse.root+'/classes/Products').success(function(data){
+		var store = $scope.store = {
+			items: data.results
+		}
+	})
 	
 	var tools = $scope.tools = {
 		message: {
@@ -70,6 +53,9 @@ angular.module('myApp', [])
 				}
 				$scope.cart.quantity++;
 				$scope.cart.subTotal += item.price;
+				$scope.cart.shipping += item.shipping;
+				$scope.cart.total = $scope.cart.subTotal + $scope.cart.shipping;
+				
 				tools.cart.localSave();
 			},
 			remove: function(item){
@@ -82,8 +68,14 @@ angular.module('myApp', [])
 					
 				$scope.cart.quantity--;
 				$scope.cart.subTotal -= item.price;
+				$scope.cart.shipping -= item.shipping;
+				$scope.cart.total = $scope.cart.subTotal + $scope.cart.shipping;
 				
 				tools.cart.localSave();
+			},
+			calculate: function(){
+				$scope.shipping = $scope.cart.shipping;
+				$scope.total = $scope.cart.total;
 			},
 			checkout: function(){
 				var cart = angular.copy($scope.cart);
