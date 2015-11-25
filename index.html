@@ -65,6 +65,12 @@
 					<li>
 						<a class="page-scroll" href="#contact">Contact</a>
 					</li>
+					<li ng-show="cart.items.length">
+						<a class="btn btn-warning" href="#cart">
+							<span>{{cart.quantity}}</span>
+							<i class="fa fa-shopping-cart fa-1x"></i>
+						</a>
+					</li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -114,7 +120,7 @@
 			<div  class="row">
 				<div class="col-md-4" ng-repeat="item in store.items">
 					<div class="card">
-						<h1>{{item.title}}</h1>
+						<h3>{{item.title}}</h3>
 						<a class="label label-warning" ng-show="item.quantity" ng-click="tools.cart.remove(item)">{{item.quantity}} In Cart</a>
 						<img class="img-responsive" src="{{item.img}}"></img>
 						<div class="banner clearfix">
@@ -125,15 +131,41 @@
 				</div>
 			</div>
 			<hr>
-			<div  class="row">
+			<div id="cart" class="row" style="padding-top:75px;">
 				<div class="col-md-4 col-md-offset-4">
-					<p>Sub Total: {{cart.subTotal | currency}}</p>
-					<p>Shipping: {{shipping | currency}}</p>
-					<p>Total: {{total | currency}}</p>
-					<div class="input-group">
-						<input type="text" class="form-control" placeholder="zip code">
-						<a class="input-group-addon" ng-click="tools.cart.calculate()">Calculate</a>
-					</div>
+					<h1>Checkout</h1>
+					<table class="table table-striped">
+						<tr>
+							<td>Item Count:</td>
+							<td>{{cart.quantity}}</td>
+						</tr>
+						<tr>
+							<td>Sub Total:</td>
+							<td>{{cart.subTotal | currency}}</td>
+						</tr>
+						<tr>
+							<td>Shipping:</td>
+							<td ng-show="shipping">{{shipping | currency}}</td>
+							<td ng-hide="shipping">
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="zip code" ng-model="zip">
+									<a class="input-group-addon link" ng-click="tools.cart.calculate()">Calculate</a>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>Tax:</td>
+							<td>{{tax | currency}}</td>
+						</tr>
+						<tr>
+							<td>Discounts:</td>
+							<td>{{cart.discounts | currency}}</td>
+						</tr>
+						<tr>
+							<td>Total:</td>
+							<td>{{total | currency}}</td>
+						</tr>
+					</table>
 					<a class="btn btn-info btn-block" ng-click="tools.cart.checkout()">Checkout</a>
 				</div>
 			</div>
@@ -175,6 +207,9 @@
 				<div class="col-lg-12 text-center">
 					<h2 class="section-heading">Contact Us</h2>
 					<h3 class="section-subheading text-muted">If you would like to become a supplier, please contact us - we would love to work with you.</h3>
+					<div class="alert alert-info">
+						<h3>Phone: 575-590-7965</h3>
+					</div>
 				</div>
 			</div>
 			<div class="row">

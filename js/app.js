@@ -55,6 +55,7 @@ angular.module('myApp', [])
 				$scope.cart.subTotal += item.price;
 				$scope.cart.shipping += item.shipping;
 				$scope.cart.total = $scope.cart.subTotal + $scope.cart.shipping;
+				$scope.shipping 	= null;
 				
 				tools.cart.localSave();
 			},
@@ -69,7 +70,8 @@ angular.module('myApp', [])
 				$scope.cart.quantity--;
 				$scope.cart.subTotal -= item.price;
 				$scope.cart.shipping -= item.shipping;
-				$scope.cart.total = $scope.cart.subTotal + $scope.cart.shipping;
+				$scope.cart.total 	= $scope.cart.subTotal + $scope.cart.shipping;
+				$scope.shipping 	= null;
 				
 				tools.cart.localSave();
 			},
