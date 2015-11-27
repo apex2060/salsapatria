@@ -37,7 +37,7 @@ angular.module('myApp', [])
 		},
 		cart: {
 			clean: function(){
-				$scope.cart = {items: [], quantity: 0, subTotal: 0, shipping: 0, total: 0}
+				$scope.cart = {items: [], quantity: 0, subTotal: 0, shipping: 0, discount: 0,  total: 0}
 				tools.cart.localSave();
 			},
 			localSave: function(){
@@ -54,7 +54,7 @@ angular.module('myApp', [])
 				$scope.cart.quantity++;
 				$scope.cart.subTotal += item.price;
 				$scope.cart.shipping += item.shipping;
-				$scope.cart.total = $scope.cart.subTotal + $scope.cart.shipping;
+				$scope.cart.total 	= $scope.cart.subTotal + $scope.cart.shipping;
 				$scope.shipping 	= null;
 				
 				tools.cart.localSave();
@@ -76,12 +76,21 @@ angular.module('myApp', [])
 				tools.cart.localSave();
 			},
 			calculate: function(){
+				var elig = it.elig = 0;
+				for(var i=0; i<$scope.cart.items.length; i++)
+					if($scope.cart.items[i].discount)
+						elig += $scope.cart.items[i].quantity;
+				if(elig >= 12)
+					$scope.cart.discount = 10;
+					
+				$scope.cart.total = ($scope.cart.subTotal + $scope.cart.shipping - $scope.cart.discount);
 				$scope.shipping = $scope.cart.shipping;
+				$scope.discount = $scope.cart.discount;
 				$scope.total = $scope.cart.total;
 			},
 			checkout: function(){
+				tools.cart.calculate();
 				var cart = angular.copy($scope.cart);
-					cart.total 			= cart.subTotal + cart.shipping;
 					cart.pennies 		= Math.round(cart.total * 100);
 					cart.description 	= cart.quantity + ' Item(s)';
 					
@@ -119,4 +128,11 @@ angular.module('myApp', [])
 		tools.cart.clean()
 		
 	it.MainCtrl = $scope;
+})
+
+.controller('AdminCtrl', function($scope, $http, $location, config) {
+	$http.get(config.parse.root+'/classes/Orders/'+$location.search().id).success(function(order){
+		$scope.order = order;
+	});
+	it.AdminCtrl = $scope;
 })
